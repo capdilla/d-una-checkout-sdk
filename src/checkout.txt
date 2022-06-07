@@ -1,0 +1,127 @@
+import { Environment, envs } from './d-una-environment';
+
+// A. Admin del Merchant
+// 1. API Keys -> Sebastian
+// apiKey private -> backend
+// apiKey public -> frontend/ui
+
+// 2. URLs
+// URL del "core": ThirdParty (Woocomerce) / Core d-Una / Custom Ecommerce
+// URL es usada en el ExternalMerchantAPI (EMA)
+// URL para webhooks: pagos y cualquier evento: Diccionario de eventos
+
+// B. Monitoreo
+// Cuantas llamadas hace el merchant usando un API Key?
+// X-Ray / OpenTelemetry OpenTrace /
+// Metricas: Llamadas X
+
+
+// C.
+export class Checkout {
+    // validate singleton
+    constructor({ apiKey, env }){
+        this.apiKey = apiKey;
+        this.env = env;
+
+        this.endpoint = env === Environment.Production 
+            ? envs[Environment.Production]
+            : envs[Environment.Staging]
+    }
+
+    init({ amplitudeKey, gtagKey, rudderstackKey }){
+        // init amplitude
+        // init googletag manager
+        // init sift
+        // generate guest token
+        this.guestToken
+        
+        // initialize all services
+        this.user = new AuthService(this.endpoint, this.apiKey, this.guestToken)
+        this.order = new OrderService(this.endpoint, this.apiKey)
+        this.address = new AddressService(this.endpoint, this.apiKey)
+    }
+
+    generateIdempotencyKey(){
+        // X-Idempotency-Key
+        // X-Nonce
+        // 1. Primera llamada de pago
+        // 202 Accepted
+        // 2. Segunda llamda
+        // 409 Conflict
+
+        // curl -X POST -H "X-API-Key: ..." -H "X-Nonce: ..." -H "Authorization: Bearer ...." -H "" url/api
+    }
+
+    getEndpointByService(){
+        // temp mientras apigw tien todos los
+    }
+}
+
+const checkout = new Checkout({
+    apiKey: '',
+    env: 'staging'
+});
+
+Checkout.init()
+
+// Endpoints de d-una
+checkout.login()
+checkout.requestOtp()
+checkout.signupWithEmail()
+checkout.forgotPassword()
+checkout.addAddress()
+checkout.removeAddress()
+checkout.editAddress()
+checkout.getCurrent()
+checkout.getCards()
+checkout.addCard()
+checkout.removeCard()
+checkout.getPaymentMethods()
+
+// ExternalMerchant API -> MerchantAuth (URLs): URL para POST de coupon/orden/shipping/tx y URL para Webhook -> 
+// coupon: aplicarlo / remove / 
+// orden: crear order / get order status /
+// shipping: getShippingMethod // calcular
+// tax: getTax // calcular
+checkout.createOrder()
+checkout.getShippingMethods()
+checkout.getOrderStatus()
+checkout.coupon()
+
+// Tracking
+checkout.logEvent() // amplitude/gtag/rudderstack
+
+// API Cart: Objeto immutable
+// IdemKey
+// tokenizar el cart -> cart -> hash unico -> SESIONS (Firma)
+// Signature -> JWK (JWT -> IdP -> ) -> well-known/jwk.json
+checkout.tokenizeCart()
+
+// Payment Async
+// Submit payment -> cola -> consumidor -> realiza el pago
+//  EMA ---> Cola -> Webhook
+
+// SDK Checkout Web: iframe de checkout.getduna.com donde utilizamos el checkout-sdk-js
+// Embedded Frontend
+// 1. WebviewURL: apps
+// 2. Modal
+// Endpoints ExternalMerchantAPI
+/**
+ * <script src="checkout.frontend.js" data-d-una-key="key"> 
+ */
+
+// 2 formas de sobreescribir funcionalidad
+// 1. id de elemento
+// 2. Boton de pago 
+checkout.init({
+    apiKey: apiKeyPublic,
+    {
+        onSubmitPayment
+        onSuccess
+        onCheckoutStart
+        // etc
+    } // pago realizado, inicio checkout, pago exitoso
+});
+
+
+// Shopify / Woocommerce / Vtex / Prestashop

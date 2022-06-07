@@ -1,0 +1,14 @@
+*
+
+!build
+!build/**/*.ts
+!build/endpoints.js
+!package.json
+
+@duna/client/*
+!@duna/client/build
+!@duna/client/build/*.d.ts
+!@duna/client/build/**/*.d.ts
+@duna/client/build/**/**.js.**
+@duna/client/build/**/**.js
+!@duna/client/package.json

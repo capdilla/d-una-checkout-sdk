@@ -1,0 +1,15 @@
+node_modules
+coverage
+
+.env
+.DS_Store
+
+@duna/client
+
+.github
+.husky
+scripts
+/scr
+tests
+
+!/@duna

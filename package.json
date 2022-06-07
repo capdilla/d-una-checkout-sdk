@@ -1,0 +1,57 @@
+{
+    "name": "@d-una/checkout-sdk",
+    "version": "1.18.28-rc.1",
+    "description": "",
+    "main": "build/index.js",
+    "private": false,
+    "scripts": {
+        "login": "aws codeartifact login --tool npm --repository web-packages --domain getduna-com --domain-owner 661995054732 --namespace @duna",
+        "build": "webpack && npm run build-endpoints",
+        "build-endpoints": "tsc src/endpoints.ts --outDir build",
+        "build-node": "webpack --config webpack.web.config.js",
+        "test": "jest",
+        "test-dev": "jest --watch  --coverage=true",
+        "prepare": "husky install",
+        "prettier": "prettier",
+        "check-code": "tsc --noEmit",
+        "lint": "eslint ./src",
+        "post-build": "node scripts/copyTypes.js",
+        "pre-build-node": "node scripts/buildNode.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/DUNA-E-Commmerce/checkout-sdk-js.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/DUNA-E-Commmerce/checkout-sdk-js/issues"
+    },
+    "homepage": "https://github.com/DUNA-E-Commmerce/checkout-sdk-js#readme",
+    "devDependencies": {
+        "@types/jest": "^27.0.2",
+        "@types/node": "^16.10.2",
+        "@types/uuid": "^8.3.1",
+        "@typescript-eslint/eslint-plugin": "^4.33.0",
+        "@typescript-eslint/parser": "^4.33.0",
+        "axios-mock-adapter": "^1.20.0",
+        "dotenv": "^10.0.0",
+        "eslint": "^7.32.0",
+        "eslint-plugin-react": "^7.26.1",
+        "eslint-plugin-react-hooks": "^4.2.0",
+        "fs-extra": "^10.0.0",
+        "husky": "^7.0.0",
+        "jest": "^27.2.2",
+        "prettier": "^2.4.1",
+        "ts-jest": "^27.0.5",
+        "ts-loader": "^9.2.6",
+        "ts-node": "^10.2.1",
+        "typescript": "^4.4.3",
+        "webpack": "^5.55.1",
+        "webpack-cli": "^4.8.0"
+    },
+    "lint-staged": {
+        "**/*": "prettier --write --ignore-unknown"
+    }
+}
